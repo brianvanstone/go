@@ -1,12 +1,8 @@
 package tech.notpaper.go.messaging.entities.simple;
 
-import java.util.regex.Pattern;
-
 import tech.notpaper.go.messaging.entities.complex.ListEntity;
 
 public class GoString implements CharSequence, SimpleEntity, ListEntity, Comparable<GoString> {
-	
-	private static final Pattern whitespacePattern = Pattern.compile("\\s+");
 	
 	private String wrappedString;
 	

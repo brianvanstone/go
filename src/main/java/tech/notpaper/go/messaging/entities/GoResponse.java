@@ -53,7 +53,6 @@ public class GoResponse implements GoMessage {
 	@Override
 	public String toString() {
 		String content = lines.toString().trim();
-		String tokenFromStatus = this.responseStatus.toString();
 		if(content.startsWith("=") || content.startsWith("?")) {
 			content = content.replaceAll("^[\\=\\?]+", "");
 		}
