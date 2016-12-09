@@ -43,8 +43,13 @@ public class DefaultEngineProxy implements EnhancedEngine {
 		
 		GoCommand goCommand = new GoCommand(s);
 		SimpleEntity id = goCommand.getId();
+		if (id == null) {
+			id = new GoString("");
+		}
 		SimpleEntity command = goCommand.getCommand();
 		GoList<ListEntity> args = goCommand.getArgs();
+		
+		//TODO Don't lost the id. it needs to get passed in so that the response can match it
 		
 		if(debug) {
 			System.err.print(goCommand);
@@ -53,54 +58,54 @@ public class DefaultEngineProxy implements EnhancedEngine {
 		try {
 			switch(command.toString()) {
 			case "protocol_version":
-				return this.protocolVersion().toString();
+				return this.protocolVersion().setId(id).toString();
 			case "name":
-				return this.name().toString();
+				return this.name().setId(id).toString();
 			case "version":
-				return this.version().toString();
+				return this.version().setId(id).toString();
 			case "known_command":
-				return this.knownCommand(args).toString();
+				return this.knownCommand(args).setId(id).toString();
 			case "list_commands":
-				return this.listCommands().toString();
+				return this.listCommands().setId(id).toString();
 			case "quit":
-				return this.quit().toString();
+				return this.quit().setId(id).toString();
 			case "boardsize":
-				return this.boardsize(args).toString();
+				return this.boardsize(args).setId(id).toString();
 			case "clear_board":
-				return this.clearBoard().toString();
+				return this.clearBoard().setId(id).toString();
 			case "komi":
-				return this.komi(args).toString();
+				return this.komi(args).setId(id).toString();
 			case "fixed_handicap":
-				return this.fixedHandicap(args).toString();
+				return this.fixedHandicap(args).setId(id).toString();
 			case "place_free_handicap":
-				return this.placeFreeHandicap(args).toString();
+				return this.placeFreeHandicap(args).setId(id).toString();
 			case "set_free_handicap":
-				return this.setFreeHandicap(args).toString();
+				return this.setFreeHandicap(args).setId(id).toString();
 			case "play":
-				return this.play(args).toString();
+				return this.play(args).setId(id).toString();
 			case "gen_move":
-				return this.genMove(args).toString();
+				return this.genMove(args).setId(id).toString();
 			case "undo":
-				return this.undo().toString();
+				return this.undo().setId(id).toString();
 			case "time_settings":
-				return this.timeSettings(args).toString();
+				return this.timeSettings(args).setId(id).toString();
 			case "time_left":
-				return this.timeLeft(args).toString();
+				return this.timeLeft(args).setId(id).toString();
 			case "final_score":
-				return this.finalScore(args).toString();
+				return this.finalScore(args).setId(id).toString();
 			case "final_status_list":
-				return this.finalStatusList(args).toString();
+				return this.finalStatusList(args).setId(id).toString();
 			case "loadsgf":
-				return this.loadsgf(args).toString();
+				return this.loadsgf(args).setId(id).toString();
 			case "reg_gen_move":
-				return this.regGenMove(args).toString();
+				return this.regGenMove(args).setId(id).toString();
 			case "show_board":
-				return this.showBoard().toString();
+				return this.showBoard().setId(id).toString();
 				default:
 					throw new IllegalArgumentException("Failed to parse message received by engine [" + s + "]");
 			}
 		} catch (Exception e) {
-			return renderException(e).toString();
+			return renderException(e).setId(id).toString();
 		}
 	}
 	
