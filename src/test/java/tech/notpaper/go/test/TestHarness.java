@@ -18,6 +18,6 @@ public class TestHarness {
 		System.out.print(controller.protocolVersion());
 		System.out.print(controller.version());
 		System.out.print(controller.listCommands());
-		//System.out.print(controller.knownCommand("my_custom_command"));
+		System.out.print(controller.komi(5.5f));
 	}
 }

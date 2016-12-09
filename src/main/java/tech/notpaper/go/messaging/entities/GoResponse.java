@@ -15,7 +15,7 @@ public class GoResponse implements GoMessage {
 	
 	public GoResponse(String s) {
 		if(s == null || s.trim().isEmpty()) {
-			this.responseStatus = Status.BLANK;
+			this.responseStatus = Status.PASS;
 		} else {
 			this.responseStatus = String.valueOf(s.charAt(0)).equals(Status.FAIL.toString()) ? Status.FAIL : Status.PASS;
 		}
@@ -35,17 +35,15 @@ public class GoResponse implements GoMessage {
 	}
 	
 	public enum Status {
-		PASS, FAIL, BLANK;
+		PASS, FAIL;
 		
 		@Override
 		public String toString() {
 			switch(this) {
-			case PASS:
-				return "=";
-			case BLANK:
-				return "";
-			default:
+			case FAIL:
 				return "?";
+			default:
+				return "=";
 			}
 		}
 	}
@@ -57,12 +55,10 @@ public class GoResponse implements GoMessage {
 			content = content.replaceAll("^[\\=\\?]+", "");
 		}
 		
-		content = content + "\n\n";
-		
 		if (content.trim().isEmpty()) {
-			return "";
+			return "=\n\n";
 		} else {
-			return this.getStatus() + content;
+			return this.getStatus() + content + "\n\n";
 		}
 	}
 }

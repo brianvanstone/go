@@ -1,5 +1,9 @@
 package tech.notpaper.go.engine.impl;
 
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
+import tech.notpaper.go.board.Move;
 import tech.notpaper.go.board.impl.DefaultBoard;
 import tech.notpaper.go.messaging.entities.GoResponse;
 import tech.notpaper.go.messaging.entities.complex.GoList;
@@ -9,28 +13,30 @@ public class DefaultEngine extends DefaultEngineProxy {
 	
 	private DefaultBoard board;
 	private boolean closed;
+	private boolean black;
 	
 	public DefaultEngine(int size, float komi, boolean black) {
 		this.board = new DefaultBoard(size, komi);
 		this.closed = false;
+		this.black = black;
 	}
 	
 	@Override
 	public GoResponse quit() {
 		this.closed = true;
-		return new GoResponse("ACK");
+		return new GoResponse();
 	}
 
 	@Override
 	public GoResponse boardsize(GoList<ListEntity> args) {
 		this.board = new DefaultBoard(Integer.parseInt(args.get(0).toString()), board.getKomi());
-		return new GoResponse("ACK");
+		return new GoResponse();
 	}
 
 	@Override
 	public GoResponse clearBoard() {
 		this.board.clear();
-		throw new NotYetImplementedException("clear_board");
+		return new GoResponse();
 	}
 
 	@Override
@@ -55,7 +61,9 @@ public class DefaultEngine extends DefaultEngineProxy {
 
 	@Override
 	public GoResponse play(GoList<ListEntity> args) {
-		throw new UnsupportedCommandException("play");
+		List<Move> legalMoves = this.board.getAllLegalMoves(this.black);
+		int index = ThreadLocalRandom.current().nextInt(legalMoves.size());
+		return new GoResponse(legalMoves.get(index).toString());
 	}
 
 	@Override

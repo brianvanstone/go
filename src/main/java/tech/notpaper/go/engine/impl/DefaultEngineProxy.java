@@ -30,6 +30,7 @@ public class DefaultEngineProxy implements EnhancedEngine {
 		supportedCommands.add("clear_board");
 		supportedCommands.add("komi");
 		supportedCommands.add("play");
+		supportedCommands.add("genmove");
 		supportedCommands.add("undo");
 		supportedCommands.add("show_board");
 	}
@@ -103,7 +104,7 @@ public class DefaultEngineProxy implements EnhancedEngine {
 		}
 	}
 	
-	private static final Pattern ILLEGAL_PATTERN = Pattern.compile("[^-_ \\tA-Za-z0-9]");
+	private static final Pattern ILLEGAL_PATTERN = Pattern.compile("[^-_. \\tA-Za-z0-9]");
 	private static final Pattern CR_PATTERN = Pattern.compile("\r");
 	private static final Pattern COMMENT_PATTERN = Pattern.compile("^\\s+#.*");
 	private static final Pattern HT_PATTERN = Pattern.compile("\\t");
