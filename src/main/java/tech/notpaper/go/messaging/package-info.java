@@ -1,5 +1,5 @@
 /**
- * Package for Go Parser entities
+ * Package for Go messaging entities according to the Go Text Protocol v2
  */
 /**
  * @author Brian
