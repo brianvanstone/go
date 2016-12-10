@@ -12,5 +12,4 @@ public interface MoveHistory {
 	public boolean empty();
 	public void pushMove(Move move);
 	public Move popMove(Move move);
-	
 }
