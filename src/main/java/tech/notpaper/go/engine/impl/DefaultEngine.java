@@ -61,7 +61,7 @@ public class DefaultEngine extends DefaultEngineProxy {
 
 	@Override
 	public GoResponse play(GoList<ListEntity> args) {
-		List<Move> legalMoves = this.board.getAllLegalMoves(this.black);
+		List<Move> legalMoves = this.board.getLegalMoves(this.black);
 		int index = ThreadLocalRandom.current().nextInt(legalMoves.size());
 		return new GoResponse(legalMoves.get(index).toString());
 	}
