@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import tech.notpaper.go.board.BoardConfiguration;
+import tech.notpaper.go.board.Vertex;
 
 public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<Vertex> {
 	private Vertex[][] vertices;
@@ -14,7 +15,7 @@ public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<V
 		this.vertices = new Vertex[size][size];
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
-				this.vertices[x][y] = new Vertex(x, y);
+				this.vertices[x][y] = new DefaultVertex(x, y);
 			}
 		}
 	}
@@ -70,5 +71,10 @@ public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<V
 			int y = index % this.size;
 			return new Point(x, y);
 		}
+	}
+
+	@Override
+	public String display() {
+		return "";
 	}
 }

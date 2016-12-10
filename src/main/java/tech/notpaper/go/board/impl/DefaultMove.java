@@ -1,6 +1,7 @@
 package tech.notpaper.go.board.impl;
 
 import tech.notpaper.go.board.Move;
+import tech.notpaper.go.board.Vertex;
 
 public class DefaultMove implements Move {
 	

@@ -2,15 +2,17 @@ package tech.notpaper.go.board.impl;
 
 import java.awt.Point;
 
+import tech.notpaper.go.board.Vertex;
 
-public class Vertex extends Point {
+
+public class DefaultVertex extends Point implements Vertex {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4566642165438026131L;
 	private State state;
 	
-	public Vertex(int x, int y) {
+	public DefaultVertex(int x, int y) {
 		super(x,y);
 		this.state = State.NEUTRAL;
 	}
@@ -23,15 +25,18 @@ public class Vertex extends Point {
 		return String.valueOf(((char)(x+97))) + String.valueOf(y);
 	}
 	
+	@Override
 	public State getState() {
 		return this.state;
 	}
 	
+	@Override
 	public void setState(State state) {
 		this.state = state;
 	}
 	
-	public enum State {
-		WHITE, BLACK, NEUTRAL;
+	@Override
+	public void setLocation(int x, int y) {
+		this.setLocation(x, y);
 	}
 }
