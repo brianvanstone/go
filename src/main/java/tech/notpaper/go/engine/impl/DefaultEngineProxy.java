@@ -43,18 +43,27 @@ public class DefaultEngineProxy implements EnhancedEngine {
 		//first scrub the command that you received
 		s = scrubCommand(s);
 		
+		//then construct a GoCommand from it
 		GoCommand goCommand = new GoCommand(s);
+		
+		//fetch the id from the command to add it to the response
 		SimpleEntity id = goCommand.getId();
-		if (id == null) {
+		if (id == null || id.toString().trim().isEmpty()) {
 			id = new GoString("");
 		}
+		
+		//get the command name portion of the GoCommand
 		SimpleEntity command = goCommand.getCommand();
+		
+		//get the args for the command
 		GoList<ListEntity> args = goCommand.getArgs();
 		
+		//printing the accepted command
 		if(debug) {
 			System.err.print(goCommand);
 		}
 		
+		//process the command
 		try {
 			switch(command.toString()) {
 			case "protocol_version":

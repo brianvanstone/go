@@ -1,6 +1,7 @@
 package tech.notpaper.go.messaging.entities;
 
 import tech.notpaper.go.messaging.entities.complex.MultiLineList;
+import tech.notpaper.go.messaging.entities.simple.GoInteger;
 import tech.notpaper.go.messaging.entities.simple.GoString;
 import tech.notpaper.go.messaging.entities.simple.SimpleEntity;
 
@@ -23,6 +24,11 @@ public class GoResponse implements GoMessage {
 			this.responseStatus = String.valueOf(s.charAt(0)).equals(Status.FAIL.toString()) ? Status.FAIL : Status.PASS;
 		}
 		lines = new MultiLineList(s);
+	}
+	
+	public GoResponse setId(int id) {
+		this.id = new GoInteger(id);
+		return this;
 	}
 	
 	public GoResponse setId(SimpleEntity id) {
