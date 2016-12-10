@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import tech.notpaper.go.messaging.entities.simple.GoString;
 
-public class GoList<T extends ListEntity> extends LinkedList<T> {
+public class GoList<T extends ListEntity> extends LinkedList<T>  implements ComplexEntity {
 	/**
 	 * 
 	 */
