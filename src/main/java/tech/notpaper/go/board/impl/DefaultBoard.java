@@ -1,6 +1,5 @@
 package tech.notpaper.go.board.impl;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import tech.notpaper.go.board.Board;
@@ -8,7 +7,7 @@ import tech.notpaper.go.board.Move;
 import tech.notpaper.go.board.MoveHistory;
 import tech.notpaper.go.board.TimeSettings;
 
-public class DefaultBoard extends Board {
+public class DefaultBoard implements Board {
 	
 	private DefaultBoardConfiguration config;
 	private int size;
@@ -17,6 +16,9 @@ public class DefaultBoard extends Board {
 	private MoveHistory moveHistory;
 	private float komi;
 	private TimeSettings timeSettings;
+	
+	private List<Move> legalWhiteMoves;
+	private List<Move> legalBlackMoves;
 	
 	public DefaultBoard(int size, float komi) {
 		this.size = size;
@@ -68,5 +70,10 @@ public class DefaultBoard extends Board {
 	@Override
 	public void clear() {
 		this.config = new DefaultBoardConfiguration(this.size);
+	}
+
+	@Override
+	public List<Move> getLegalMoves(boolean black) {
+		return black ? legalBlackMoves : legalWhiteMoves;
 	}
 }
