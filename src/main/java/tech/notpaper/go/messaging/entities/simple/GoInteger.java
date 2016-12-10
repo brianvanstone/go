@@ -1,6 +1,10 @@
 package tech.notpaper.go.messaging.entities.simple;
 
 public class GoInteger extends Number implements SimpleEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1932960996236894233L;
 	private Integer wrappedInteger;
 	
 	public GoInteger(int value) {

@@ -20,12 +20,6 @@ public class DefaultEngine extends DefaultEngineProxy {
 		this.closed = false;
 		this.black = black;
 	}
-	
-	@Override
-	public GoResponse quit() {
-		this.closed = true;
-		return new GoResponse();
-	}
 
 	@Override
 	public GoResponse boardsize(GoList<ListEntity> args) {
@@ -109,5 +103,9 @@ public class DefaultEngine extends DefaultEngineProxy {
 	@Override
 	public GoResponse showBoard() {
 		throw new NotYetImplementedException("undo");
+	}
+
+	public boolean isClosed() {
+		return closed;
 	}
 }

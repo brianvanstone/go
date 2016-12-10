@@ -35,6 +35,8 @@ public class DefaultEngineProxy implements EnhancedEngine {
 		supportedCommands.add("show_board");
 	}
 
+	protected boolean closed;
+
 	@Override
 	public String accept(String s) {
 		
@@ -48,8 +50,6 @@ public class DefaultEngineProxy implements EnhancedEngine {
 		}
 		SimpleEntity command = goCommand.getCommand();
 		GoList<ListEntity> args = goCommand.getArgs();
-		
-		//TODO Don't lost the id. it needs to get passed in so that the response can match it
 		
 		if(debug) {
 			System.err.print(goCommand);
@@ -110,7 +110,6 @@ public class DefaultEngineProxy implements EnhancedEngine {
 	}
 	
 	private static final Pattern ILLEGAL_PATTERN = Pattern.compile("[^-_. \\tA-Za-z0-9]");
-	private static final Pattern CR_PATTERN = Pattern.compile("\r");
 	private static final Pattern COMMENT_PATTERN = Pattern.compile("^\\s+#.*");
 	private static final Pattern HT_PATTERN = Pattern.compile("\\t");
 	private static final Pattern BLANK_LINE_PATTERN = Pattern.compile("^\\s+\\n$");
@@ -169,7 +168,8 @@ public class DefaultEngineProxy implements EnhancedEngine {
 
 	@Override
 	public GoResponse quit() {
-		throw new NotYetImplementedException("quit");
+		this.closed = true;
+		return new GoResponse();
 	}
 
 	@Override
@@ -281,5 +281,10 @@ public class DefaultEngineProxy implements EnhancedEngine {
 		public NotYetImplementedException(String command) {
 			super("unsupported command [" + command + "] is not yet implemented");
 		}
+	}
+
+	@Override
+	public boolean isClosed() {
+		return this.closed;
 	}
 }

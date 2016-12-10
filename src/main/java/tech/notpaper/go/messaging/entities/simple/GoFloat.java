@@ -1,6 +1,10 @@
 package tech.notpaper.go.messaging.entities.simple;
 
 public class GoFloat extends Number implements SimpleEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4799150704333660115L;
 	private Float wrappedFloat;
 	
 	public GoFloat(float f) {

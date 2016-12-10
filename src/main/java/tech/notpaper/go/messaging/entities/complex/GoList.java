@@ -3,7 +3,6 @@ package tech.notpaper.go.messaging.entities.complex;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,6 +20,7 @@ public class GoList<T extends ListEntity> extends LinkedList<T> {
 		this.entities = new LinkedList<>();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public GoList(List<String> tokens) {
 		this.entities = new LinkedList<>();
 		for (String token : tokens) {
@@ -28,6 +28,7 @@ public class GoList<T extends ListEntity> extends LinkedList<T> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public GoList(String s) {
 		this.entities = new LinkedList<>();
 		
@@ -48,6 +49,7 @@ public class GoList<T extends ListEntity> extends LinkedList<T> {
 		return (T) this.entities.get(index);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void add(int index, ListEntity element) {
 		this.entities.add(index, (T) new GoString(element.toString()));
