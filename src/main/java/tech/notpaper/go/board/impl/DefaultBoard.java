@@ -6,6 +6,8 @@ import tech.notpaper.go.board.Board;
 import tech.notpaper.go.board.Move;
 import tech.notpaper.go.board.MoveHistory;
 import tech.notpaper.go.board.TimeSettings;
+import tech.notpaper.go.board.Vertex;
+import tech.notpaper.go.board.Vertex.State;
 
 public class DefaultBoard implements Board {
 	
@@ -75,5 +77,11 @@ public class DefaultBoard implements Board {
 	@Override
 	public List<Move> getLegalMoves(boolean black) {
 		return black ? legalBlackMoves : legalWhiteMoves;
+	}
+
+	@Override
+	public void move(Move move) {
+		Vertex v = move.getVertex();
+		this.getBoardConfiguration().placeStone(v.getLocation().x, v.getLocation().y, v.getState() == State.BLACK);
 	}
 }

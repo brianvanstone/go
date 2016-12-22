@@ -2,19 +2,24 @@ package tech.notpaper.go.board.impl;
 
 import tech.notpaper.go.board.Move;
 import tech.notpaper.go.board.Vertex;
+import tech.notpaper.go.board.Vertex.State;
 
 public class DefaultMove implements Move {
 	
 	private Vertex vertex;
-	private boolean black;
 	
 	public DefaultMove(Vertex v, boolean black) {
 		this.vertex = v;
-		this.black = black;
+		this.vertex.setState(black ? State.BLACK : State.WHITE);
 	}
 	
 	@Override
 	public String toString() {
-		return this.black ? "b " : "w " + this.vertex.toString();
+		return this.vertex.getState() == State.BLACK ? "b " : "w " + this.vertex.toString();
+	}
+
+	@Override
+	public Vertex getVertex() {
+		return this.vertex;
 	}
 }

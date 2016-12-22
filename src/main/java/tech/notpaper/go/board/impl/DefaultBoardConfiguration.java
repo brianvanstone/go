@@ -7,6 +7,7 @@ import java.util.List;
 
 import tech.notpaper.go.board.BoardConfiguration;
 import tech.notpaper.go.board.Vertex;
+import tech.notpaper.go.board.Vertex.State;
 
 public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<Vertex> {
 	private Vertex[][] vertices;
@@ -26,6 +27,12 @@ public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<V
 	
 	public Vertex.State stateAt(int x, int y) {
 		return this.vertices[x][y].getState();
+	}
+	
+	public Vertex placeStone(int x, int y, boolean black) {
+		Vertex v = new DefaultVertex(x, y);
+		v.setState(black ? State.BLACK : State.WHITE);
+		return v;
 	}
 	
 	public List<Vertex> getAllVerticesWithState(Vertex.State state) {

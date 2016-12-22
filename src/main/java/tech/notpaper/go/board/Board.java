@@ -12,4 +12,5 @@ public interface Board {
 	public TimeSettings getTimeSettings();
 	public void clear();
 	public List<Move> getLegalMoves(boolean black);
+	public void move(Move move);
 }
