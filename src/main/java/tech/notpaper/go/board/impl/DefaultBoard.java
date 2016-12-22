@@ -19,8 +19,7 @@ public class DefaultBoard implements Board {
 	private float komi;
 	private TimeSettings timeSettings;
 	
-	private List<Move> legalWhiteMoves;
-	private List<Move> legalBlackMoves;
+	private List<Move> legalMoves;
 	
 	public DefaultBoard(int size, float komi) {
 		this.size = size;
@@ -76,12 +75,15 @@ public class DefaultBoard implements Board {
 
 	@Override
 	public List<Move> getLegalMoves(boolean black) {
-		return black ? legalBlackMoves : legalWhiteMoves;
+		return legalMoves;
 	}
 
 	@Override
 	public void move(Move move) {
-		Vertex v = move.getVertex();
-		this.getBoardConfiguration().placeStone(v.getLocation().x, v.getLocation().y, v.getState() == State.BLACK);
+		if (legalMoves.contains(move)) {
+			Vertex v = move.getVertex();
+			this.getBoardConfiguration()
+				.placeStone(v.getLocation().x, v.getLocation().y, v.getState() == State.BLACK);
+		}
 	}
 }
