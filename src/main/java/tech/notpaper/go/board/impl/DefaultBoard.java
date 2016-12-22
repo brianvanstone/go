@@ -80,10 +80,14 @@ public class DefaultBoard implements Board {
 
 	@Override
 	public void move(Move move) {
-		if (legalMoves.contains(move)) {
+		if (isMoveLegal(move)) {
 			Vertex v = move.getVertex();
 			this.getBoardConfiguration()
 				.placeStone(v.getLocation().x, v.getLocation().y, v.getState() == State.BLACK);
 		}
+	}
+	
+	private boolean isMoveLegal(Move move) {
+		return this.legalMoves.contains(move);
 	}
 }
