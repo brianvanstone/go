@@ -1,5 +1,6 @@
 package tech.notpaper.go.board.impl;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import tech.notpaper.go.board.Board;
@@ -18,8 +19,6 @@ public class DefaultBoard implements Board {
 	private MoveHistory moveHistory;
 	private float komi;
 	private TimeSettings timeSettings;
-	
-	private List<Move> legalMoves;
 	
 	public DefaultBoard(int size, float komi) {
 		this.size = size;
@@ -75,19 +74,28 @@ public class DefaultBoard implements Board {
 
 	@Override
 	public List<Move> getLegalMoves(boolean black) {
-		return legalMoves;
+		return new LinkedList<>();
 	}
 
 	@Override
 	public void move(Move move) {
+		//if the move is legal, place the stone
 		if (isMoveLegal(move)) {
 			Vertex v = move.getVertex();
 			this.getBoardConfiguration()
 				.placeStone(v.getLocation().x, v.getLocation().y, v.getState() == State.BLACK);
 		}
+		
+		//now remove captured stones, if any
+		
+		
 	}
 	
 	private boolean isMoveLegal(Move move) {
-		return this.legalMoves.contains(move);
+		//need algorithm to determine if move is legal
+		
+		//for starters, move is not legal if space is occupied
+		
+		return true;
 	}
 }
