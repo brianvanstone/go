@@ -78,7 +78,17 @@ public class DefaultBoard implements Board {
 
 	@Override
 	public List<Move> getLegalMoves(boolean black) {
-		return new LinkedList<>();
+		List<Move> legalMoves = new LinkedList<>();
+		for (int x = 0; x < this.getSize(); x++) {
+			for (int y = 0; y < this.getSize(); y++) {
+				Move move = new DefaultMove(this.config.vertexAt(x, y), black);
+				if (isMoveLegal(move)) {
+					legalMoves.add(move);
+				}
+			}
+		}
+		
+		return legalMoves;
 	}
 
 	@Override

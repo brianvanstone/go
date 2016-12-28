@@ -3,7 +3,7 @@ package tech.notpaper.go.controller.commands;
 import tech.notpaper.go.messaging.entities.GoCommand;
 import tech.notpaper.go.messaging.entities.complex.GoList;
 import tech.notpaper.go.messaging.entities.simple.Color;
-import tech.notpaper.go.messaging.entities.simple.Move;
+import tech.notpaper.go.messaging.entities.simple.GoMove;
 import tech.notpaper.go.messaging.entities.simple.Vertex;
 
 public class Commands {
@@ -56,7 +56,7 @@ public class Commands {
 		return new GoCommand(id + " set_free_handicap " + vertices);
 	}
 	
-	public static GoCommand play(int id, Move move) {
+	public static GoCommand play(int id, GoMove move) {
 		return new GoCommand(id + " play " + move);
 	}
 	

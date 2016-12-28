@@ -14,7 +14,7 @@ import tech.notpaper.go.messaging.entities.complex.ListEntity;
 import tech.notpaper.go.messaging.entities.simple.GoString;
 import tech.notpaper.go.messaging.entities.simple.SimpleEntity;
 
-public class DefaultEngineProxy implements EnhancedEngine {
+public abstract class DefaultEngineProxy implements EnhancedEngine {
 	
 	private static List<String> supportedCommands;
 	private static boolean debug = true;
@@ -181,85 +181,7 @@ public class DefaultEngineProxy implements EnhancedEngine {
 		return new GoResponse();
 	}
 
-	@Override
-	public GoResponse boardsize(GoList<ListEntity> args) {
-		throw new NotYetImplementedException("boardsize");
-	}
-
-	@Override
-	public GoResponse clearBoard() {
-		throw new NotYetImplementedException("clear_board");
-	}
-
-	@Override
-	public GoResponse komi(GoList<ListEntity> args) {
-		throw new NotYetImplementedException("komi");
-	}
-
-	@Override
-	public GoResponse fixedHandicap(GoList<ListEntity> args) {
-		throw new NotYetImplementedException("fixed_handicap");
-	}
-
-	@Override
-	public GoResponse placeFreeHandicap(GoList<ListEntity> args) {
-		throw new NotYetImplementedException("place_free_handicap");
-	}
-
-	@Override
-	public GoResponse setFreeHandicap(GoList<ListEntity> args) {
-		throw new NotYetImplementedException("set_free_handicap");
-	}
-
-	@Override
-	public GoResponse play(GoList<ListEntity> args) {
-		throw new UnsupportedCommandException("play");
-	}
-
-	@Override
-	public GoResponse genMove(GoList<ListEntity> args) {
-		throw new NotYetImplementedException("gen_move");
-	}
-
-	@Override
-	public GoResponse undo() {
-		throw new NotYetImplementedException("undo");
-	}
-
-	@Override
-	public GoResponse timeSettings(GoList<ListEntity> args) {
-		throw new NotYetImplementedException("time_settings");
-	}
-
-	@Override
-	public GoResponse timeLeft(GoList<ListEntity> args) {
-		throw new NotYetImplementedException("time_left");
-	}
-
-	@Override
-	public GoResponse finalScore(GoList<ListEntity> args) {
-		throw new NotYetImplementedException("final_score");
-	}
-
-	@Override
-	public GoResponse finalStatusList(GoList<ListEntity> args) {
-		throw new NotYetImplementedException("final_status_list");
-	}
-
-	@Override
-	public GoResponse loadsgf(GoList<ListEntity> args) {
-		throw new NotYetImplementedException("loadsgf");
-	}
-
-	@Override
-	public GoResponse regGenMove(GoList<ListEntity> args) {
-		throw new NotYetImplementedException("reg_gen_move");
-	}
-
-	@Override
-	public GoResponse showBoard() {
-		throw new NotYetImplementedException("undo");
-	}
+	
 
 	public final class UnsupportedCommandException extends UnsupportedOperationException {
 		

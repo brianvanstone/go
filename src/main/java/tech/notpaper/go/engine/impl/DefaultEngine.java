@@ -1,13 +1,17 @@
 package tech.notpaper.go.engine.impl;
 
+import java.awt.Point;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import tech.notpaper.go.board.Move;
 import tech.notpaper.go.board.impl.DefaultBoard;
+import tech.notpaper.go.board.impl.DefaultMove;
 import tech.notpaper.go.messaging.entities.GoResponse;
 import tech.notpaper.go.messaging.entities.complex.GoList;
 import tech.notpaper.go.messaging.entities.complex.ListEntity;
+import tech.notpaper.go.messaging.entities.simple.Color;
+import tech.notpaper.go.messaging.entities.simple.GoMove;
 
 public class DefaultEngine extends DefaultEngineProxy {
 	
@@ -55,14 +59,21 @@ public class DefaultEngine extends DefaultEngineProxy {
 
 	@Override
 	public GoResponse play(GoList<ListEntity> args) {
-		List<Move> legalMoves = this.board.getLegalMoves(this.black);
-		int index = ThreadLocalRandom.current().nextInt(legalMoves.size());
-		return new GoResponse(legalMoves.get(index).toString());
+		String move = args.get(0).toString();
+		GoMove moveToMake = new GoMove(move);
+		Point p = moveToMake.getVertex().getLocation();
+		this.board.move(new DefaultMove(p.x, p.y, moveToMake.getColor() == Color.BLACK));
+		return new GoResponse();
 	}
 
 	@Override
 	public GoResponse genMove(GoList<ListEntity> args) {
-		throw new NotYetImplementedException("gen_move");
+		Color color = Color.fromString(args.get(0).toString());
+		
+		List<Move> legalMoves = this.board.getLegalMoves(color == Color.BLACK);
+		Move move = legalMoves.get(ThreadLocalRandom.current().nextInt(legalMoves.size()));
+		this.board.move(move);
+		return new GoResponse(move.toString());
 	}
 
 	@Override

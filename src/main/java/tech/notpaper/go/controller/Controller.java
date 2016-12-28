@@ -3,7 +3,7 @@ package tech.notpaper.go.controller;
 import tech.notpaper.go.messaging.entities.*;
 import tech.notpaper.go.messaging.entities.complex.GoList;
 import tech.notpaper.go.messaging.entities.simple.Color;
-import tech.notpaper.go.messaging.entities.simple.Move;
+import tech.notpaper.go.messaging.entities.simple.GoMove;
 import tech.notpaper.go.messaging.entities.simple.Vertex;
 
 public interface Controller {
@@ -19,7 +19,7 @@ public interface Controller {
 	public GoResponse fixedHandicap(int numberOfStones);
 	public GoResponse placeFreeHandicap(int numberOfStones);
 	public GoResponse setFreeHandicap(GoList<Vertex> vertices);
-	public GoResponse play(Move move);
+	public GoResponse play(GoMove move);
 	public GoResponse genMove(Color color);
 	public GoResponse undo();
 	public GoResponse timeSettings(int mainTime, int byoYomiTime, int byoYomiStones);

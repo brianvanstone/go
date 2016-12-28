@@ -13,6 +13,11 @@ public class DefaultMove implements Move {
 		this.vertex.setState(black ? State.BLACK : State.WHITE);
 	}
 	
+	public DefaultMove(int x, int y, boolean black) {
+		this.vertex = new DefaultVertex(x, y);
+		this.vertex.setState(black ? State.BLACK : State.WHITE);
+	}
+	
 	@Override
 	public String toString() {
 		return this.vertex.getState() == State.BLACK ? "b " : "w " + this.vertex.toString();

@@ -6,7 +6,7 @@ import tech.notpaper.go.engine.Engine;
 import tech.notpaper.go.messaging.entities.GoResponse;
 import tech.notpaper.go.messaging.entities.complex.GoList;
 import tech.notpaper.go.messaging.entities.simple.Color;
-import tech.notpaper.go.messaging.entities.simple.Move;
+import tech.notpaper.go.messaging.entities.simple.GoMove;
 import tech.notpaper.go.messaging.entities.simple.Vertex;
 
 public class DefaultController implements Controller {
@@ -80,7 +80,7 @@ public class DefaultController implements Controller {
 	}
 
 	@Override
-	public GoResponse play(Move move) {
+	public GoResponse play(GoMove move) {
 		return new GoResponse(engine.accept(Commands.play(id.next(), move).toString()));
 	}
 

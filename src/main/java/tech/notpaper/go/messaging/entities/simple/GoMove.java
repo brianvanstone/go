@@ -1,13 +1,19 @@
 package tech.notpaper.go.messaging.entities.simple;
 
-public class Move implements SimpleEntity {
+public class GoMove implements SimpleEntity {
 	
 	private Color color;
 	private Vertex vertex;
 	
-	public Move(Color color, Vertex vertex) {
+	public GoMove(Color color, Vertex vertex) {
 		this.color = color;
 		this.vertex = vertex;
+	}
+	
+	public GoMove(String input) {
+		String[] tokens = input.split(" ");
+		this.color = Color.fromString(tokens[0]);
+		this.vertex = new Vertex(tokens[1]);
 	}
 	
 	@Override
