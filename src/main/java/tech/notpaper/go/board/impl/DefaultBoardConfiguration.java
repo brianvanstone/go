@@ -11,12 +11,31 @@ import tech.notpaper.go.board.Vertex.State;
 
 public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<Vertex> {
 	private Vertex[][] vertices;
+	private int size;
+	private List<BoardConfiguration> configHistory;
 	
 	public DefaultBoardConfiguration(int size) {
-		this.vertices = new Vertex[size][size];
+		
+		this.size = size;
+		this.configHistory = new LinkedList<>();
+		
+		//first create them all
+		this.vertices = new DefaultVertex[size][size];
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
 				this.vertices[x][y] = new DefaultVertex(x, y);
+			}
+		}
+		
+		//now link them all
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++) {
+				DefaultVertex v = (DefaultVertex) vertices[x][y];
+				
+				v.north = y == 0 ? null : (DefaultVertex) vertices[x][y-1];
+				v.south = y == size-1 ? null: (DefaultVertex) vertices[x][y+1];
+				v.east = x == size-1 ? null : (DefaultVertex) vertices[x+1][y];
+				v.west = x == 0 ? null : (DefaultVertex) vertices[x-1][y];
 			}
 		}
 	}
@@ -35,11 +54,11 @@ public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<V
 		return v;
 	}
 	
-	public List<Vertex> getAllVerticesWithState(Vertex.State state) {
-		List<Vertex> matchingVertices = new LinkedList<>();
+	public List<DefaultVertex> getAllVerticesWithState(Vertex.State state) {
+		List<DefaultVertex> matchingVertices = new LinkedList<>();
 		for (Vertex v : this) {
 			if(v.getState() == state) {
-				matchingVertices.add(v);
+				matchingVertices.add((DefaultVertex)v);
 			}
 		}
 		return matchingVertices;
@@ -81,7 +100,41 @@ public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<V
 	}
 
 	@Override
+	public String toString() {
+		StringBuilder display = new StringBuilder();
+		for (int x = 0; x < this.size; x++) {
+			for (int y = 0; y < this.size; y++) {
+				if (x > 0) {
+					display.append("|");
+				}
+				display.append(this.vertexAt(x, y).getState().toString());
+				if (x < this.size-1) {
+					display.append("|");
+				}
+			}
+			display.append("\n");
+		}
+		return display.toString();
+	}
+	
+	@Override
 	public String display() {
-		return "";
+		return this.toString();
+	}
+	
+	@Override
+	public BoardConfiguration snapshot() {
+		DefaultBoardConfiguration snapshot = new DefaultBoardConfiguration(this.size);
+		
+		for (Vertex v : this) {
+			Point p = v.getLocation();
+			v.setState(this.vertexAt(p.x, p.y).getState());
+		}
+		
+		return snapshot;
+	}
+	
+	public BoardConfiguration snapshotFrom(int movesAgo) {
+		return this.configHistory.get(this.configHistory.size()-(movesAgo+1));
 	}
 }

@@ -1,9 +1,11 @@
 package tech.notpaper.go.board.impl;
 
+import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;
 
 import tech.notpaper.go.board.Board;
+import tech.notpaper.go.board.BoardConfiguration;
 import tech.notpaper.go.board.Move;
 import tech.notpaper.go.board.MoveHistory;
 import tech.notpaper.go.board.TimeSettings;
@@ -93,9 +95,83 @@ public class DefaultBoard implements Board {
 	
 	private boolean isMoveLegal(Move move) {
 		//need algorithm to determine if move is legal
+		//no matter what we need to restore the board state
+			//after we are done transforming it
+		BoardConfiguration oldBoard = this.config.snapshot();
+		
+		//get the location this move is supposed to play at
+		Point location = move.getVertex().getLocation();
 		
 		//for starters, move is not legal if space is occupied
+		DefaultVertex existingVertex = (DefaultVertex) this.config.vertexAt(location.x, location.y);
+		if (existingVertex.getState() != State.NEUTRAL) {
+			return false;
+		}
+		
+		//also, move is illegal if it violates Ko by resulting in an identical board state
+		//to just before the last opposing move so long as each move would be a capture
+		//rules for Ko,
+		//	1. this move captures one piece
+		//	2. last move captured one piece
+		//	3. this move results in identical board state to before last move
+		
+		//determine the color tile being placed by the move
+		boolean black = move.getVertex().getState() == State.BLACK;
+		
+		//try to color the tile and see if it runs out of liberties
+		existingVertex.setState(black ? State.BLACK : State.WHITE);
+		if (existingVertex.countLiberties() == 0) {
+			//this means we have placed a stone with 0 liberties
+			//we need to determine if this results in a capture
+			//which will restore one or more liberties to the placed piece
+			//look for pieces of the opposite color with 0 liberties
+			//and capture them. After the capture, check the current move
+			//again to see if any liberties are restored
+			
+			
+			//now to capture the opposite colored pieces
+			//first let's find them all
+			State enemyColor = black ? State.BLACK : State.WHITE;
+			List<DefaultVertex> stonesToCapture = new LinkedList<>();
+			for (DefaultVertex v : this.config.getAllVerticesWithState(enemyColor)) {
+				if (v.countLiberties() == 0) {
+					stonesToCapture.add(v);
+				}
+			}
+			
+			//now let's capture them
+			for (DefaultVertex v : stonesToCapture) {
+				v.setState(State.NEUTRAL);
+			}
+			
+			//now let's see if we restored a liberty to the piece
+				//if not then the move is not legal
+			if (existingVertex.countLiberties() == 0) {
+				//let's restore the board state and return false
+				this.config = (DefaultBoardConfiguration) oldBoard;
+				return false;
+			} else {
+				//if it now has one or more liberties, the move is only legal if it didn't violate Ko
+				//TODO determine if move violated Ko
+			}
+		}
+		
+		//before we say the move is legal, let's make sure the board state is restored
+		this.config = (DefaultBoardConfiguration) oldBoard;
 		
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder repr = new StringBuilder();
+		
+		repr.append("Moves made: " + this.moveHistory.getAllMoves().size() + "\n");
+		repr.append("White caps: " + this.whiteCaps + "\n");
+		repr.append("Black caps: "  + this.blackCaps + "\n");
+		repr.append("Board:\n");
+		repr.append(this.config.display());
+		
+		return repr.toString();
 	}
 }

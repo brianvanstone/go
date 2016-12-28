@@ -6,6 +6,18 @@ public interface Vertex {
 	
 	public enum State {
 		WHITE, BLACK, NEUTRAL;
+		
+		@Override
+		public String toString() {
+			switch(this) {
+			case WHITE:
+				return "w";
+			case BLACK:
+				return "b";
+			default:
+				return "-";
+			}
+		}
 	}
 
 	public State getState();
