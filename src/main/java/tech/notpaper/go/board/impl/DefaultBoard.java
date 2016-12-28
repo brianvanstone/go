@@ -19,6 +19,7 @@ public class DefaultBoard implements Board {
 	private int whiteCaps;
 	private int blackCaps;
 	private MoveHistory moveHistory;
+	private List<BoardConfiguration> boardHistory;
 	private float komi;
 	private TimeSettings timeSettings;
 	
@@ -29,6 +30,7 @@ public class DefaultBoard implements Board {
 		this.blackCaps = 0;
 		this.komi = komi;
 		this.moveHistory = new DefaultMoveHistory();
+		this.boardHistory = new LinkedList<>();
 		
 		//TODO implement time settings
 		this.timeSettings = null;
@@ -88,9 +90,27 @@ public class DefaultBoard implements Board {
 				.placeStone(v.getLocation().x, v.getLocation().y, v.getState() == State.BLACK);
 		}
 		
-		//now remove captured stones, if any
+		boolean black = move.getVertex().getState() == State.BLACK;
 		
+		//now to capture the opposite colored pieces
+		//first let's find them all
+		State enemyColor = black ? State.WHITE : State.BLACK;
+		List<DefaultVertex> stonesToCapture = new LinkedList<>();
+		for (DefaultVertex v : this.config.getAllVerticesWithState(enemyColor)) {
+			if (v.countLiberties() == 0) {
+				stonesToCapture.add(v);
+			}
+		}
 		
+		//now let's capture them and be sure to record them
+		for (DefaultVertex v : stonesToCapture) {
+			v.setState(State.NEUTRAL);
+			if (black) {
+				whiteCaps++;
+			} else {
+				blackCaps++;
+			}
+		}
 	}
 	
 	private boolean isMoveLegal(Move move) {
@@ -128,7 +148,6 @@ public class DefaultBoard implements Board {
 			//and capture them. After the capture, check the current move
 			//again to see if any liberties are restored
 			
-			
 			//now to capture the opposite colored pieces
 			//first let's find them all
 			State enemyColor = black ? State.BLACK : State.WHITE;
@@ -139,9 +158,11 @@ public class DefaultBoard implements Board {
 				}
 			}
 			
+			int caps = 0;
 			//now let's capture them
 			for (DefaultVertex v : stonesToCapture) {
 				v.setState(State.NEUTRAL);
+				caps++;
 			}
 			
 			//now let's see if we restored a liberty to the piece
@@ -151,8 +172,15 @@ public class DefaultBoard implements Board {
 				this.config = (DefaultBoardConfiguration) oldBoard;
 				return false;
 			} else {
-				//if it now has one or more liberties, the move is only legal if it didn't violate Ko
-				//TODO determine if move violated Ko
+				//even if the piece now has a liberty, the last thing to check
+					//is if this move violated Ko
+				DefaultBoardConfiguration now = this.config;
+				if (now.equals(this.boardHistory.get(this.boardHistory.size()-2))
+						&& caps == 1) {
+					//ko violated, return false after restting board state
+					this.config = (DefaultBoardConfiguration) oldBoard;
+					return false;
+				}
 			}
 		}
 		

@@ -12,12 +12,10 @@ import tech.notpaper.go.board.Vertex.State;
 public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<Vertex> {
 	private Vertex[][] vertices;
 	private int size;
-	private List<BoardConfiguration> configHistory;
 	
 	public DefaultBoardConfiguration(int size) {
 		
 		this.size = size;
-		this.configHistory = new LinkedList<>();
 		
 		//first create them all
 		this.vertices = new DefaultVertex[size][size];
@@ -134,7 +132,30 @@ public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<V
 		return snapshot;
 	}
 	
-	public BoardConfiguration snapshotFrom(int movesAgo) {
-		return this.configHistory.get(this.configHistory.size()-(movesAgo+1));
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof DefaultBoardConfiguration)) {
+			return false;
+		}
+		
+		DefaultBoardConfiguration other = (DefaultBoardConfiguration) obj;
+		
+		if (this.size != other.getSize()) {
+			return false;
+		}
+		
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++) {
+				if (!this.vertexAt(x, y).equals(other.vertexAt(x, y))) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+
+	public int getSize() {
+		return this.size;
 	}
 }

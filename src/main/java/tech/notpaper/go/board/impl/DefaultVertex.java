@@ -82,4 +82,20 @@ public class DefaultVertex extends Point implements Vertex {
 		
 		return liberties;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Vertex)) {
+			return false;
+		}
+		
+		Vertex other = (Vertex) obj;
+		
+		if (!(this.getX() == other.getLocation().getX()
+				&& this.getY() == other.getLocation().getY())) {
+			return false;
+		}
+		
+		return this.getState() == other.getState();
+	}
 }
