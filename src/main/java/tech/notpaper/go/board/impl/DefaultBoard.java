@@ -83,20 +83,24 @@ public class DefaultBoard implements Board {
 
 	@Override
 	public void move(Move move) {
+		//first let's push the current state to the top of the history
+		this.boardHistory.add(config.snapshot());
+		
+		//what color is the move?
+		boolean black = move.getVertex().getState() == State.BLACK;
+		
 		//if the move is legal, place the stone
 		if (isMoveLegal(move)) {
 			Vertex v = move.getVertex();
 			this.getBoardConfiguration()
-				.placeStone(v.getLocation().x, v.getLocation().y, v.getState() == State.BLACK);
+				.placeStone(v.getLocation().x, v.getLocation().y, black);
 		}
-		
-		boolean black = move.getVertex().getState() == State.BLACK;
 		
 		//now to capture the opposite colored pieces
 		//first let's find them all
-		State enemyColor = black ? State.WHITE : State.BLACK;
+		State enemy = black ? State.WHITE : State.BLACK;
 		List<DefaultVertex> stonesToCapture = new LinkedList<>();
-		for (DefaultVertex v : this.config.getAllVerticesWithState(enemyColor)) {
+		for (DefaultVertex v : this.config.getAllVerticesWithState(enemy)) {
 			if (v.countLiberties() == 0) {
 				stonesToCapture.add(v);
 			}
