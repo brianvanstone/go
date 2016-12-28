@@ -20,6 +20,7 @@ public class DefaultBoard implements Board {
 	private int blackCaps;
 	private MoveHistory moveHistory;
 	private List<BoardConfiguration> boardHistory;
+	//TODO track changes in captures
 	private float komi;
 	private TimeSettings timeSettings;
 	
