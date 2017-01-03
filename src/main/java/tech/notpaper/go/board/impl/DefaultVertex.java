@@ -27,7 +27,8 @@ public class DefaultVertex extends Point implements Vertex {
 		//return the move like a Go move
 		// i.e. A11, C9
 		// so take the x and add 97 for the ascii offset to lowercase a
-		return String.valueOf(((char)(x+97))) + String.valueOf(y);
+		
+		return String.valueOf((char)(((int)this.getX())+97)) + String.valueOf((int)this.getY());
 	}
 	
 	@Override

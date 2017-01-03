@@ -7,7 +7,7 @@ public interface Board {
 	public BoardConfiguration getBoardConfiguration();
 	public int getWhiteCaptures();
 	public int getBlackCaptures();
-	public MoveHistory getMoveHistory();
+	public List<BoardConfiguration> getMoveHistory();
 	public float getKomi();
 	public TimeSettings getTimeSettings();
 	public void clear();

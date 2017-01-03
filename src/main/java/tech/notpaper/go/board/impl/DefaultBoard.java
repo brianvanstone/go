@@ -18,7 +18,6 @@ public class DefaultBoard implements Board {
 	private int size;
 	private int whiteCaps;
 	private int blackCaps;
-	private MoveHistory moveHistory;
 	private List<BoardConfiguration> boardHistory;
 	//TODO track changes in captures
 	private float komi;
@@ -30,7 +29,6 @@ public class DefaultBoard implements Board {
 		this.whiteCaps = 0;
 		this.blackCaps = 0;
 		this.komi = komi;
-		this.moveHistory = new DefaultMoveHistory();
 		this.boardHistory = new LinkedList<>();
 		
 		//TODO implement time settings
@@ -56,11 +54,6 @@ public class DefaultBoard implements Board {
 	public int getBlackCaptures() {
 		return this.blackCaps;
 	}
-
-	@Override
-	public MoveHistory getMoveHistory() {
-		return this.moveHistory;
-	}
 	
 	@Override
 	public float getKomi() {
@@ -82,7 +75,7 @@ public class DefaultBoard implements Board {
 		List<Move> legalMoves = new LinkedList<>();
 		for (int x = 0; x < this.getSize(); x++) {
 			for (int y = 0; y < this.getSize(); y++) {
-				Move move = new DefaultMove(this.config.vertexAt(x, y), black);
+				Move move = new DefaultMove(new DefaultVertex(x,y), black);
 				if (isMoveLegal(move)) {
 					legalMoves.add(move);
 				}
@@ -209,12 +202,21 @@ public class DefaultBoard implements Board {
 	public String toString() {
 		StringBuilder repr = new StringBuilder();
 		
-		repr.append("Moves made: " + this.moveHistory.getAllMoves().size() + "\n");
+		repr.append("Moves made: " + this.boardHistory.size() + "\n");
 		repr.append("White caps: " + this.whiteCaps + "\n");
 		repr.append("Black caps: "  + this.blackCaps + "\n");
 		repr.append("Board:\n");
 		repr.append(this.config.display());
 		
 		return repr.toString();
+	}
+	
+	public void undo() {
+		this.config = (DefaultBoardConfiguration) this.boardHistory.remove(this.boardHistory.size()-1);
+	}
+
+	@Override
+	public List<BoardConfiguration> getMoveHistory() {
+		return this.boardHistory;
 	}
 }

@@ -78,7 +78,8 @@ public class DefaultEngine extends DefaultEngineProxy {
 
 	@Override
 	public GoResponse undo() {
-		throw new NotYetImplementedException("undo");
+		this.board.undo();
+		return new GoResponse();
 	}
 
 	@Override
@@ -113,7 +114,7 @@ public class DefaultEngine extends DefaultEngineProxy {
 
 	@Override
 	public GoResponse showBoard() {
-		throw new NotYetImplementedException("undo");
+		return new GoResponse(this.board.toString());
 	}
 
 	public boolean isClosed() {

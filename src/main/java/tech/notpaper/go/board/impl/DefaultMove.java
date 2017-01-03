@@ -20,7 +20,7 @@ public class DefaultMove implements Move {
 	
 	@Override
 	public String toString() {
-		return this.vertex.getState() == State.BLACK ? "b " : "w " + this.vertex.toString();
+		return (this.vertex.getState() == State.BLACK ? "b " : "w ") + this.vertex.toString();
 	}
 
 	@Override

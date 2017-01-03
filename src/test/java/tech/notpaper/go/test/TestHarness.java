@@ -3,6 +3,7 @@ package tech.notpaper.go.test;
 import tech.notpaper.go.controller.Controller;
 import tech.notpaper.go.controller.impl.DefaultController;
 import tech.notpaper.go.engine.impl.DefaultEngine;
+import tech.notpaper.go.messaging.entities.simple.Color;
 import tech.notpaper.go.engine.Engine;
 
 public class TestHarness {
@@ -18,6 +19,8 @@ public class TestHarness {
 		System.out.print(controller.protocolVersion());
 		System.out.print(controller.version());
 		System.out.print(controller.listCommands());
-		System.out.print(controller.komi(5.5f));
+		System.out.print(controller.showBoard());
+		System.out.print(controller.genMove(Color.BLACK));
+		System.out.print(controller.showBoard());
 	}
 }

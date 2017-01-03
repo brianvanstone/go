@@ -12,10 +12,20 @@ import tech.notpaper.go.board.Vertex.State;
 public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<Vertex> {
 	private Vertex[][] vertices;
 	private int size;
+	private int whiteCaps;
+	private int blackCaps;
+	
+	private DefaultBoardConfiguration(int size, int whiteCaps, int blackCaps) {
+		this(size);
+		this.whiteCaps = whiteCaps;
+		this.blackCaps = blackCaps;
+	}
 	
 	public DefaultBoardConfiguration(int size) {
 		
 		this.size = size;
+		this.whiteCaps = 0;
+		this.blackCaps = 0;
 		
 		//first create them all
 		this.vertices = new DefaultVertex[size][size];
@@ -47,9 +57,8 @@ public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<V
 	}
 	
 	public Vertex placeStone(int x, int y, boolean black) {
-		Vertex v = new DefaultVertex(x, y);
-		v.setState(black ? State.BLACK : State.WHITE);
-		return v;
+		this.vertices[x][y].setState(black ? State.BLACK : State.WHITE);
+		return this.vertices[x][y];
 	}
 	
 	public List<DefaultVertex> getAllVerticesWithState(Vertex.State state) {
@@ -101,15 +110,14 @@ public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<V
 	public String toString() {
 		StringBuilder display = new StringBuilder();
 		for (int x = 0; x < this.size; x++) {
+			display.append("|");
 			for (int y = 0; y < this.size; y++) {
-				if (x > 0) {
+				if (y > 0) {
 					display.append("|");
 				}
 				display.append(this.vertexAt(x, y).getState().toString());
-				if (x < this.size-1) {
-					display.append("|");
-				}
 			}
+			display.append("|");
 			display.append("\n");
 		}
 		return display.toString();
@@ -122,7 +130,7 @@ public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<V
 	
 	@Override
 	public BoardConfiguration snapshot() {
-		DefaultBoardConfiguration snapshot = new DefaultBoardConfiguration(this.size);
+		DefaultBoardConfiguration snapshot = new DefaultBoardConfiguration(this.size, this.whiteCaps, this.blackCaps);
 		
 		for (Vertex v : this) {
 			Point p = v.getLocation();

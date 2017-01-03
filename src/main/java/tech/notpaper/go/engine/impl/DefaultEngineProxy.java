@@ -32,7 +32,8 @@ public abstract class DefaultEngineProxy implements EnhancedEngine {
 		supportedCommands.add("play");
 		supportedCommands.add("genmove");
 		supportedCommands.add("undo");
-		supportedCommands.add("show_board");
+		supportedCommands.add("showboard");
+		supportedCommands.add("genmove");
 	}
 
 	protected boolean closed;
@@ -92,7 +93,7 @@ public abstract class DefaultEngineProxy implements EnhancedEngine {
 				return this.setFreeHandicap(args).setId(id).toString();
 			case "play":
 				return this.play(args).setId(id).toString();
-			case "gen_move":
+			case "genmove":
 				return this.genMove(args).setId(id).toString();
 			case "undo":
 				return this.undo().setId(id).toString();
@@ -108,7 +109,7 @@ public abstract class DefaultEngineProxy implements EnhancedEngine {
 				return this.loadsgf(args).setId(id).toString();
 			case "reg_gen_move":
 				return this.regGenMove(args).setId(id).toString();
-			case "show_board":
+			case "showboard":
 				return this.showBoard().setId(id).toString();
 				default:
 					throw new IllegalArgumentException("Failed to parse message received by engine [" + s + "]");
