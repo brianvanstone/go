@@ -4,6 +4,7 @@ public class GoMove implements SimpleEntity {
 	
 	private Color color;
 	private Vertex vertex;
+	private boolean pass = false;
 	
 	public GoMove(Color color, Vertex vertex) {
 		this.color = color;
@@ -13,7 +14,12 @@ public class GoMove implements SimpleEntity {
 	public GoMove(String input) {
 		String[] tokens = input.split(" ");
 		this.color = Color.fromString(tokens[0]);
-		this.vertex = new Vertex(tokens[1]);
+		if (tokens[1].toLowerCase().equals("pass")) {
+			pass = true;
+			this.vertex = new Vertex("a1");
+		} else {
+			this.vertex = new Vertex(tokens[1]);
+		}
 	}
 	
 	@Override
@@ -22,7 +28,7 @@ public class GoMove implements SimpleEntity {
 		
 		sb.append(color);
 		sb.append(" ");
-		sb.append(vertex);
+		sb.append(pass ? "pass" : vertex);
 		
 		return sb.toString();
 	}

@@ -7,7 +7,6 @@ import java.util.List;
 import tech.notpaper.go.board.Board;
 import tech.notpaper.go.board.BoardConfiguration;
 import tech.notpaper.go.board.Move;
-import tech.notpaper.go.board.MoveHistory;
 import tech.notpaper.go.board.TimeSettings;
 import tech.notpaper.go.board.Vertex;
 import tech.notpaper.go.board.Vertex.State;
@@ -72,6 +71,8 @@ public class DefaultBoard implements Board {
 
 	@Override
 	public List<Move> getLegalMoves(boolean black) {
+		BoardConfiguration config = this.config.snapshot();
+		
 		List<Move> legalMoves = new LinkedList<>();
 		for (int x = 0; x < this.getSize(); x++) {
 			for (int y = 0; y < this.getSize(); y++) {
@@ -82,22 +83,30 @@ public class DefaultBoard implements Board {
 			}
 		}
 		
+		this.config = (DefaultBoardConfiguration) config;
 		return legalMoves;
 	}
 
 	@Override
 	public void move(Move move) {
 		//first let's push the current state to the top of the history
-		this.boardHistory.add(config.snapshot());
+		this.boardHistory.add(this.config.snapshot());
+		
+		//if the move is a pass, just process it directly
+		if (move.toString().equals("pass")) {
+			return;
+		}
 		
 		//what color is the move?
 		boolean black = move.getVertex().getState() == State.BLACK;
 		
+		DefaultBoardConfiguration config = this.config;
+		
 		//if the move is legal, place the stone
 		if (isMoveLegal(move)) {
+			this.config = config;
 			Vertex v = move.getVertex();
-			this.getBoardConfiguration()
-				.placeStone(v.getLocation().x, v.getLocation().y, black);
+			this.config.placeStone(v.getLocation().x, v.getLocation().y, black);
 		}
 		
 		//now to capture the opposite colored pieces
@@ -185,7 +194,7 @@ public class DefaultBoard implements Board {
 				DefaultBoardConfiguration now = this.config;
 				if (now.equals(this.boardHistory.get(this.boardHistory.size()-2))
 						&& caps == 1) {
-					//ko violated, return false after restting board state
+					//ko violated, return false after resetting board state
 					this.config = (DefaultBoardConfiguration) oldBoard;
 					return false;
 				}

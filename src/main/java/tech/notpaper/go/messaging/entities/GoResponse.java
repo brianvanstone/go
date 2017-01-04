@@ -83,4 +83,8 @@ public class GoResponse implements GoMessage {
 			}
 		}
 	}
+	
+	public MultiLineList getContent() {
+		return lines;
+	}
 }

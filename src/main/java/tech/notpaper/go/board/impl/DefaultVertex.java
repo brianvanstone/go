@@ -1,6 +1,8 @@
 package tech.notpaper.go.board.impl;
 
 import java.awt.Point;
+import java.util.HashSet;
+import java.util.Set;
 
 import tech.notpaper.go.board.Vertex;
 
@@ -54,6 +56,11 @@ public class DefaultVertex extends Point implements Vertex {
 	 * @return liberties - The number of liberties this vertex has
 	 */
 	public int countLiberties() {
+		return countLibertiesHelper(new HashSet<>());
+	}
+	
+	protected int countLibertiesHelper(Set<Vertex> visited) {
+		visited.add(this);
 		
 		if (this.getState() == State.NEUTRAL) {
 			return 0;
@@ -63,8 +70,8 @@ public class DefaultVertex extends Point implements Vertex {
 		
 		//for each neighbor
 		for (DefaultVertex n : new DefaultVertex[] {this.north, this.south, this.east, this.west}) {
-			//if that neighbor is not the edge of the board
-			if (n != null) {
+			//if that neighbor is not the edge of the board, or we haven't already visited it
+			if (n != null && !visited.contains(n)) {
 				//determine the state of the neighbor
 				switch (n.getState()) {
 				case NEUTRAL:
@@ -74,12 +81,13 @@ public class DefaultVertex extends Point implements Vertex {
 				default:
 					//if it is the same color, look for more liberties
 					if (this.getState() == n.getState()) {
-						liberties += n.countLiberties();
+						liberties += n.countLibertiesHelper(visited);
 					}
 					break;
 				}
 			}
 		}
+		
 		
 		return liberties;
 	}
@@ -90,13 +98,29 @@ public class DefaultVertex extends Point implements Vertex {
 			return false;
 		}
 		
-		Vertex other = (Vertex) obj;
+		DefaultVertex other = (DefaultVertex) obj;
 		
-		if (!(this.getX() == other.getLocation().getX()
-				&& this.getY() == other.getLocation().getY())) {
+		if (!(this.getX() == other.getX()
+				&& this.getY() == other.getY())) {
 			return false;
 		}
 		
 		return this.getState() == other.getState();
+	}
+	
+	private static final int coeff = 3071;
+	@Override
+	public int hashCode() {
+		switch(this.state) {
+		case BLACK:
+			return (int)(coeff*this.x) + (int)(coeff*this.y);
+		case WHITE:
+			return (int)(coeff*this.x) + (int)(coeff*this.y);
+		case NEUTRAL:
+			return (int)(coeff*this.x) + (int)(coeff*this.y);
+			default:
+				return super.hashCode();
+		}
+		
 	}
 }

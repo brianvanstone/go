@@ -32,6 +32,7 @@ public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<V
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
 				this.vertices[x][y] = new DefaultVertex(x, y);
+				this.vertices[x][y].setState(State.NEUTRAL);
 			}
 		}
 		
@@ -132,7 +133,7 @@ public class DefaultBoardConfiguration implements BoardConfiguration, Iterable<V
 	public BoardConfiguration snapshot() {
 		DefaultBoardConfiguration snapshot = new DefaultBoardConfiguration(this.size, this.whiteCaps, this.blackCaps);
 		
-		for (Vertex v : this) {
+		for (Vertex v : snapshot) {
 			Point p = v.getLocation();
 			v.setState(this.vertexAt(p.x, p.y).getState());
 		}

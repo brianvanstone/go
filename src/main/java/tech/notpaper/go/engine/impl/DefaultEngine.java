@@ -59,11 +59,13 @@ public class DefaultEngine extends DefaultEngineProxy {
 
 	@Override
 	public GoResponse play(GoList<ListEntity> args) {
-		String move = args.get(0).toString();
-		GoMove moveToMake = new GoMove(move);
+		String color = args.get(0).toString();
+		String location = args.get(1).toString();
+		GoMove moveToMake = new GoMove(color + " " + location);
 		Point p = moveToMake.getVertex().getLocation();
-		this.board.move(new DefaultMove(p.x, p.y, moveToMake.getColor() == Color.BLACK));
-		return new GoResponse();
+		Move newMove = new DefaultMove(p.x, p.y, moveToMake.getColor() == Color.BLACK);
+		this.board.move(newMove);
+		return new GoResponse(newMove.toString());
 	}
 
 	@Override
@@ -71,7 +73,12 @@ public class DefaultEngine extends DefaultEngineProxy {
 		Color color = Color.fromString(args.get(0).toString());
 		
 		List<Move> legalMoves = this.board.getLegalMoves(color == Color.BLACK);
-		Move move = legalMoves.get(ThreadLocalRandom.current().nextInt(legalMoves.size()));
+		Move move = null;
+		if(legalMoves.size() > 0) {
+			move = legalMoves.get(ThreadLocalRandom.current().nextInt(legalMoves.size()));
+		} else {
+			move = DefaultMove.pass(color == Color.BLACK);
+		}
 		this.board.move(move);
 		return new GoResponse(move.toString());
 	}

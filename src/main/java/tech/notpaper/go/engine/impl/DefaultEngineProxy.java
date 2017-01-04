@@ -33,7 +33,6 @@ public abstract class DefaultEngineProxy implements EnhancedEngine {
 		supportedCommands.add("genmove");
 		supportedCommands.add("undo");
 		supportedCommands.add("showboard");
-		supportedCommands.add("genmove");
 	}
 
 	protected boolean closed;
@@ -61,7 +60,7 @@ public abstract class DefaultEngineProxy implements EnhancedEngine {
 		
 		//printing the accepted command
 		if(debug) {
-			System.err.print(goCommand);
+			System.out.print(goCommand);
 		}
 		
 		//process the command

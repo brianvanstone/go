@@ -7,6 +7,13 @@ import tech.notpaper.go.board.Vertex.State;
 public class DefaultMove implements Move {
 	
 	private Vertex vertex;
+	private boolean pass = false;
+	
+	public static DefaultMove pass(boolean black) {
+		DefaultMove move = new DefaultMove(new DefaultVertex(0, 0), black);
+		move.pass = true;
+		return move;
+	}
 	
 	public DefaultMove(Vertex v, boolean black) {
 		this.vertex = v;
@@ -20,7 +27,7 @@ public class DefaultMove implements Move {
 	
 	@Override
 	public String toString() {
-		return (this.vertex.getState() == State.BLACK ? "b " : "w ") + this.vertex.toString();
+		return (this.vertex.getState() == State.BLACK ? "b " : "w ") +  (pass ? "pass" : this.vertex.toString());
 	}
 
 	@Override
